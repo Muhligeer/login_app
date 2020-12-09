@@ -17,12 +17,10 @@ enum LoginStatus { notSignIn, signIn }
 
 class _LoginPageState extends State<LoginPage> implements LoginCallBack {
   LoginStatus _loginStatus = LoginStatus.notSignIn;
-  BuildContext _ctx;
   final _formKey = GlobalKey<FormState>();
   final _user = TextEditingController();
   final _password = TextEditingController();
   final scaffoldKey = new GlobalKey<ScaffoldState>();
-  bool _isLoged = false;
 
   String user, password = '';
 
@@ -64,9 +62,9 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
 
   @override
   Widget build(BuildContext context) {
+    getPreferences();
     switch (_loginStatus) {
       case LoginStatus.notSignIn:
-        _ctx = context;
         final userField = TextFormField(
           controller: _user,
           validator: _validateUser,
@@ -171,7 +169,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
         );
         break;
       case LoginStatus.signIn:
-        return HomeScreen(signOut);
+        return HomeScreen();
         break;
     }
   }
@@ -197,7 +195,6 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
 
     if (form.validate()) {
       setState(() {
-        _isLoged = true;
         form.save();
         _response.doLogin(user, password);
       });
@@ -218,9 +215,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
   @override
   void onLoginError(String error) {
     _showSnackBar(error);
-    setState(() {
-      _isLoged = false;
-    });
+    setState(() {});
   }
 
   @override
@@ -230,9 +225,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
       _loginStatus = LoginStatus.signIn;
     } else {
       // TODO: implement onLoginSuccess
-      setState(() {
-        _isLoged = false;
-      });
+      setState(() {});
     }
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:login_app/src/views/home_screen.dart';
+import 'package:login_app/src/views/list_users_page.dart';
 
-import 'src/shared/app_view.dart';
 import 'src/views/login_page.dart';
 import 'src/views/register_page.dart';
 
@@ -17,6 +16,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (context) => LoginPage(),
         '/register': (context) => RegisterPage(),
+        '/list': (context) => ListUsersPage()
       },
     );
   }

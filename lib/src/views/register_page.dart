@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:login_app/src/controllers/cadastro_controller.dart';
-import 'package:login_app/src/database/database_helper.dart';
 import 'package:login_app/src/models/user.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -17,8 +16,16 @@ class _RegisterPageState extends State<RegisterPage> {
   final _password = TextEditingController();
   final _confirmPassword = TextEditingController();
 
+  final scaffoldKey = new GlobalKey<ScaffoldState>();
+
   final dbHelper = CadastroController();
   bool confirmPass = false;
+
+  void _showSnackBar(String text) {
+    scaffoldKey.currentState.showSnackBar(new SnackBar(
+      content: new Text(text),
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +74,10 @@ class _RegisterPageState extends State<RegisterPage> {
         padding: EdgeInsets.fromLTRB(25.0, 20.0, 25.0, 20.0),
         onPressed: () {
           _onClickRegister(context);
+
+          Future.delayed(const Duration(milliseconds: 500), () {
+            Navigator.of(context).pushReplacementNamed('/login');
+          });
         },
         child: Text(
           'Cadastrar',
@@ -108,6 +119,7 @@ class _RegisterPageState extends State<RegisterPage> {
       appBar: AppBar(
         title: Text('Cadastrar'),
       ),
+      key: scaffoldKey,
       body: SingleChildScrollView(
         child: SizedBox(
           height: MediaQuery.of(context).size.height,
@@ -170,14 +182,8 @@ class _RegisterPageState extends State<RegisterPage> {
     }
 
     User usuario = User(user, password);
+    await CadastroController().insert(usuario);
 
-    Map<String, dynamic> row = {
-      DatabaseHelper.columnUsuario: user,
-      DatabaseHelper.columnSenha: password
-    };
-    final id = await CadastroController().insert(usuario);
-    print('linha inserida id: $id');
-
-    print('User: $user Password: $password');
+    _showSnackBar('Usuário criado');
   }
 }

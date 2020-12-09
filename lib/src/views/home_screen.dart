@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:login_app/src/views/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
-  final VoidCallback signOut;
-  HomeScreen(this.signOut);
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  signOut() {
+  signOut() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
-      widget.signOut();
+      preferences.setInt("value", null);
+      print('trnout');
     });
   }
 
@@ -23,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
       value = preferences.getInt("value");
       usuario = preferences.getString("usuario");
     });
+    print(usuario);
   }
 
   @override
@@ -41,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             onPressed: () {
               signOut();
+              return LoginPage();
             },
             icon: Icon(Icons.logout),
           )
@@ -55,10 +58,12 @@ class _HomeScreenState extends State<HomeScreen> {
               borderRadius: BorderRadius.circular(5),
               child: new MaterialButton(
                 color: Colors.grey[350],
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/list');
+                },
                 child: Text(
-                  'Apagar conta',
-                  style: TextStyle(color: Colors.red),
+                  'Listar users',
+                  style: TextStyle(color: Colors.black),
                 ),
               ),
             )

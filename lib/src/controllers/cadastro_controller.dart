@@ -23,10 +23,14 @@ class CadastroController {
     return Future.error('Usuário ou senha incorretos');
   }
 
-  getAllUser() async {
-    var db = await connection.database;
-    List lista = await db.rawQuery("SELECT usuario FROM user");
+  Future<List<User>> getAllUser() async {
+    var dbClient = await connection.database;
+    var resposta = await dbClient.query("user");
 
-    return lista;
+    List<User> list = resposta.isNotEmpty
+        ? resposta.map((c) => User.fromMap(c)).toList()
+        : null;
+
+    return list;
   }
 }
