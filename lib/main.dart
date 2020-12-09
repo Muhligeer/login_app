@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:login_app/src/login/MyHomePage.dart';
+import 'package:login_app/src/views/home_screen.dart';
 
-void main() => runApp(MyApp());
+import 'src/shared/app_view.dart';
+import 'src/views/login_page.dart';
+import 'src/views/register_page.dart';
+
+void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
   @override
@@ -9,7 +13,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Entrar',
-      home: MyHomePage(title: 'Login'),
+      initialRoute: '/login',
+      routes: {
+        '/login': (context) => LoginPage(),
+        '/register': (context) => RegisterPage(),
+      },
     );
   }
 }
